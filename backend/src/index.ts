@@ -150,7 +150,7 @@ const resolvers = {
                 token,
             };
         },
-        logout: async (_: any, __: any, context: any) => {
+        Logout: async (_: any, __: any, context: any) => {
             context.res.clearCookie('token');
             return true;
         },
@@ -170,12 +170,6 @@ const verifyToken = (token: string) => {
     }
 }
 
-// const app = express();
-// const httpServer = http.createServer(app);
-// app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-// app.use(cookieParser())
-// app.use(express.json())
-
 async function startServer() {
     const app = express();
     const httpServer = http.createServer(app);
@@ -191,7 +185,7 @@ async function startServer() {
 
     app.use(
         cors({
-            origin: 'http://localhost:3000',
+            origin: 'http://localhost:5173',
             credentials: true,
         })
     );
@@ -202,6 +196,7 @@ async function startServer() {
     // https://community.apollographql.com/t/error-in-using-expressmiddleware/8415/3
     app.use('/graphql', expressMiddleware(server, {
         context: async ({ req, res }: { req: Request, res: Response }) => {
+            console.log('req,res= ', req, res)
             const token = req.cookies.token;
             let user: { userId: string } | null = null;
 
