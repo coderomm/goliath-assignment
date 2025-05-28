@@ -1,6 +1,5 @@
 import { useAuth } from '../hooks/useAuth';
-import './App.css'
-import { LoginForm } from './components/auth/LoginForm';
+import LoginPage from './components/auth/LoginPage';
 import { Dashboard } from './components/dashboard/Dashboard';
 
 function App() {
@@ -14,7 +13,7 @@ function App() {
     );
   }
 
-  return user ? <Dashboard /> : <LoginForm />;
+  return user ? <Dashboard /> : <LoginPage />;
 }
 
 export default App
