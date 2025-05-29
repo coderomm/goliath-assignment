@@ -10,7 +10,7 @@ query Me {
 `
 
 export const PRODUCTS_QUERY = gql`
-query Products($filter:ProductFilter, $sort:ProductSort, $limit:Int, $offfset:Int){
+query Products($filter:ProductFilter, $sort:ProductSort, $limit:Int, $offset:Int){
     products(filter: $filter, sort: $sort, limit: $limit, offset: $offset) {
       id
       name

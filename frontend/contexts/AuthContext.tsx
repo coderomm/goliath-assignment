@@ -36,8 +36,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                     password
                 }
             })
-            console.log('data= ', data)
-            setUser(data.login.user)
+            // console.log('data= ', data)
+            setUser(data.Login.user)
             client.refetchQueries({ include: [ME_QUERY] });
         } catch (error: any) {
             throw new Error(error)

@@ -83,6 +83,8 @@ export const LoginForm: React.FC = () => {
                         <p className="font-medium mb-2">Demo credentials:</p>
                         <p>Email: admin@example.com</p>
                         <p>Password: admin123</p>
+                        <p>Email: user@example.com</p>
+                        <p>Password: user123</p>
                     </div>
                 </div>
             </div>

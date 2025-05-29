@@ -1,4 +1,4 @@
-import { mockProducts, users } from './mockData'
+import { mockProducts, mockUsers } from './mockData'
 import jwt from 'jsonwebtoken';
 import express from 'express';
 import http from 'http'
@@ -7,7 +7,7 @@ import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -35,7 +35,7 @@ const typeDefs = `#graphql
         category: String!
         price: Float!
         stock: Int!
-        created: String!
+        createdAt: String!
     }
         
     type AuthPayload {
@@ -47,7 +47,7 @@ const typeDefs = `#graphql
         category: String
         priceMin: Float
         priceMax: Float
-        stock: Int
+        stockMin: Int
     }
 
     enum SortOrder {
@@ -62,7 +62,7 @@ const typeDefs = `#graphql
 
     type Query {
         me: User
-        products(filter: ProductFilter, sort: ProductSort, Limit: Int, offset: Int): [Product!]!
+        products(filter: ProductFilter, sort: ProductSort, limit: Int, offset: Int): [Product!]!
     }
 
     type Mutation {
@@ -78,9 +78,9 @@ const resolvers = {
             if (!context.user) {
                 throw new Error('Not authenticated');
             }
-            return users.find(user => user.id === context.user.id)
+            return mockUsers.find(user => user.id === context.user.id)
         },
-        products: async (_: any, args: { filter?: any, sort?: any, limit?: number, offfset?: number }) => {
+        products: async (_: any, args: { filter?: any, sort?: any, limit?: number, offset?: number }) => {
             let filteredProducts = [...mockProducts]
             if (args.filter) {
                 const { category, priceMin, priceMax, stockMin } = args.filter
@@ -118,20 +118,23 @@ const resolvers = {
                     return 0
                 })
             }
-            const offfset = args.offfset || 0
+            const offset = args.offset || 0
             const limit = args.limit || filteredProducts.length
 
-            return filteredProducts.slice(offfset, offfset + limit)
+            return filteredProducts.slice(offset, offset + limit)
         },
     },
 
     Mutation: {
         Login: async (_: any, { email, password }: { email: string; password: string }, context: any) => {
-            const user = users.find(u => u.email === email)
+            // console.log('email: ', email)
+            // console.log('password: ', password)
+            const user = mockUsers.find(u => u.email === email)
+            // console.log('user== ',user)
             if (!user) {
                 throw new Error('Invalid credentials');
             }
-            const isValid = await bcrypt.compare(password, user.password)
+            const isValid = await bcrypt.compare(password.trim(), user.password)
             if (!isValid) {
                 throw new Error('Invalid credentials');
             }
@@ -196,7 +199,6 @@ async function startServer() {
     // https://community.apollographql.com/t/error-in-using-expressmiddleware/8415/3
     app.use('/graphql', expressMiddleware(server, {
         context: async ({ req, res }: { req: Request, res: Response }) => {
-            console.log('req,res= ', req, res)
             const token = req.cookies.token;
             let user: { userId: string } | null = null;
 
