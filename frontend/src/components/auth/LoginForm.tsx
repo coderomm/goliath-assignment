@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Input } from '../common/Input';
 import { Button } from '../common/Button';
 import { useAuth } from '../../../hooks/useAuth';
-import type {LoginFormData} from '../../../utils/types'
+import type { LoginFormData } from '../../../utils/types'
 
 export const LoginForm: React.FC = () => {
     const [formData, setFormData] = useState<LoginFormData>({
@@ -41,7 +41,7 @@ export const LoginForm: React.FC = () => {
                     </h2>
                 </div>
 
-                <div className="mt-8 space-y-6">
+                <form onSubmit={handleSubmit} className="mt-8 space-y-6">
                     <div className="space-y-4">
                         <Input
                             label="Email address"
@@ -86,7 +86,7 @@ export const LoginForm: React.FC = () => {
                         <p>Email: user@example.com</p>
                         <p>Password: user123</p>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );
