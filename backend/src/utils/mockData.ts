@@ -1,6 +1,6 @@
 export const mockUsers = [
   { id: '1', email: 'admin@example.com', password: '$2b$10$zlelXVHfCQVIzEXwDHjUzuILxh8yTHpvXqBrIb9vpuPlSTPIJO0hq' }, // password: admin123
-  { id: '2', email: 'user@example.com', password: '$2b$10$V9Lw1lIkHuxrOISbrB890.lDk2aPqA0ocSvJZWKEyANDGA1sfAvXm' }, // password: admin123
+  { id: '2', email: 'user@example.com', password: '$2b$10$V9Lw1lIkHuxrOISbrB890.lDk2aPqA0ocSvJZWKEyANDGA1sfAvXm' }, // password: user123
 ];
 
 export const mockProducts = [
