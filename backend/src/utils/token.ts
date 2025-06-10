@@ -6,10 +6,15 @@ if (!JWT_SECRET) {
 }
 
 export const createToken = (userId: string) => {
-    if (!userId) {
+    try {
+        if (!userId) {
+            return null
+        }
+        return jwt.sign({ userId }, JWT_SECRET, { expiresIn: '1h' })
+    } catch (error) {
+        console.error(error)
         return null
     }
-    return jwt.sign({ userId }, JWT_SECRET, { expiresIn: '1h' })
 }
 
 export const verifyToken = (token: string) => {

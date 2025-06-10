@@ -1,8 +1,6 @@
-import dotenv from 'dotenv/config'
+import dotenv from 'dotenv'
 // Load environment variables first, before any other imports
-
-import { mockProducts, mockUsers } from './utils/mockData'
-import jwt from 'jsonwebtoken';
+dotenv.config()
 import cors from 'cors'
 import express from 'express';
 import http from 'http'
@@ -11,12 +9,10 @@ import cookieParser from 'cookie-parser'
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { AppContext } from './utils/types';
 import { typeDefs } from "./graphql/typeDefs/index";
 import { resolvers } from "./graphql/resolvers/index";
-import bcrypt from 'bcrypt'
-import { Request, Response } from 'express'
-import { createToken, verifyToken } from './utils/token';
-import { AppContext } from './utils/types';
+import { verifyToken } from './utils/token';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
@@ -28,10 +24,6 @@ const CORS_WHITELIST = [
     'http://localhost:3001',
     'http://localhost:5173'
 ]
-
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
-// your data.
 
 const app = express();
 const PORT = process.env.PORT || 5001
@@ -53,7 +45,6 @@ async function startServer() {
 
     await apolloServer.start();
 
-    // https://community.apollographql.com/t/error-in-using-expressmiddleware/8415/3
     app.use('/graphql',
         cors<cors.CorsRequest>({ origin: CORS_WHITELIST, credentials: true }),
         expressMiddleware(apolloServer, {
