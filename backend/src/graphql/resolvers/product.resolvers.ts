@@ -1,18 +1,21 @@
 import { mockProducts, mockUsers } from "../../utils/mockData";
 import bcrypt from 'bcrypt'
 import { createToken } from "../../utils/token";
+import { AppContext } from "../context";
+import { QueryProductsArgs, Resolvers } from "../generated/graphql";
 
 // Resolvers define how to fetch the types defined in your schema.
-export const productResolvers = {
+export const productResolvers: Resolvers = {
+
     Query: {
-        me: async (_: any, __: any, context: any) => {
-            if (!context.user) {
-                throw new Error('Not authenticated');
-            }
-            return mockUsers.find(user => user.id === context.user.id)
+        me: async (_, __, context: AppContext) => {
+
+            const user = context.user ? mockUsers.find(u => u.id === context.user?.id) : null;
+            if (!user) throw new Error('Not authenticated');
+            return { id: user.id, email: user.email };
         },
 
-        products: async (_: any, args: { filter?: any, sort?: any, limit?: number, offset?: number }) => {
+        products: async (_, args: QueryProductsArgs) => {
             let filteredProducts = [...mockProducts]
             if (args.filter) {
                 const { category, priceMin, priceMax, stockMin } = args.filter
@@ -58,7 +61,7 @@ export const productResolvers = {
     },
 
     Mutation: {
-        Login: async (_: any, { email, password }: { email: string; password: string }, context: any) => {
+        Login: async (_, { email, password }, context: AppContext) => {
             const user = mockUsers.find(u => u.email === email)
             if (!user) {
                 throw new Error('Invalid credentials');
@@ -82,7 +85,7 @@ export const productResolvers = {
                 token,
             };
         },
-        Logout: async (_: any, __: any, context: any) => {
+        Logout: async (_, __, context: AppContext) => {
             context.res.clearCookie('token');
             return true;
         },

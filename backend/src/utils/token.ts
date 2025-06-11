@@ -1,30 +1,15 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
-    throw new Error('JWT_SECRET missing')
+    throw new Error('JWT_SECRET missing');
 }
+const SECRET = JWT_SECRET as string;
 
 export const createToken = (userId: string) => {
-    try {
-        if (!userId) {
-            return null
-        }
-        return jwt.sign({ userId }, JWT_SECRET, { expiresIn: '1h' })
-    } catch (error) {
-        console.error(error)
-        return null
-    }
+    return jwt.sign({ id: userId }, SECRET, { expiresIn: '7d' })
 }
 
 export const verifyToken = (token: string) => {
-    try {
-        if (!token) {
-            return null;
-        }
-        return jwt.verify(token, JWT_SECRET) as { userId: string };
-    } catch (error) {
-        console.error(error)
-        return null
-    }
+    return jwt.verify(token, SECRET) as { id: string };
 }

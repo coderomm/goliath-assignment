@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 export type AppContext = {
-    user: { userId: string } | null;
+    user?: { id: string } | null;
     token?: string;
     req: Request;
     res: Response;
