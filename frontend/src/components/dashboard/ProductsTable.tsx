@@ -1,22 +1,8 @@
-import React from 'react';
-import type { Product, ProductSort } from '../../../utils/types';
 import { LoadingSpinner } from '../common/LoadingSpinner';
+import { useProductsContext } from '../../contexts/ProductsContext';
 
-interface ProductsTableProps {
-    products: Product[];
-    loading: boolean;
-    error?: Error | null;
-    sort: ProductSort;
-    onSort: (field: string) => void;
-}
-
-export const ProductsTable: React.FC<ProductsTableProps> = ({
-    products,
-    loading,
-    error,
-    sort,
-    onSort,
-}) => {
+export const ProductsTable = () => {
+    const { products, loading, error, sort, updateSort } = useProductsContext();
     const getSortIcon = (field: string) => {
         if (sort.field !== field) return '';
         return sort.order === 'ASC' ? ' ↑' : ' ↓';
@@ -77,25 +63,25 @@ export const ProductsTable: React.FC<ProductsTableProps> = ({
                         <tr>
                             <th
                                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors"
-                                onClick={() => onSort('name')}
+                                onClick={() => updateSort('name')}
                             >
                                 Name{getSortIcon('name')}
                             </th>
                             <th
                                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors"
-                                onClick={() => onSort('category')}
+                                onClick={() => updateSort('category')}
                             >
                                 Category{getSortIcon('category')}
                             </th>
                             <th
                                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors"
-                                onClick={() => onSort('price')}
+                                onClick={() => updateSort('price')}
                             >
                                 Price{getSortIcon('price')}
                             </th>
                             <th
                                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors"
-                                onClick={() => onSort('stock')}
+                                onClick={() => updateSort('stock')}
                             >
                                 Stock{getSortIcon('stock')}
                             </th>

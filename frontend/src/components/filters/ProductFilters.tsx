@@ -2,18 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
 import type { FilterFormData, ProductFilter } from '../../../utils/types';
+import { useProductsContext } from '../../contexts/ProductsContext';
 
-interface ProductFiltersProps {
-    filters: ProductFilter;
-    onFiltersChange: (filters: Partial<ProductFilter>) => void;
-    onClearFilters: () => void;
-}
-
-export const ProductFilters: React.FC<ProductFiltersProps> = ({
-    filters,
-    onFiltersChange,
-    onClearFilters,
-}) => {
+export const ProductFilters = () => {
+    const { filters, updateFilters, clearFilters } = useProductsContext();
     const [formData, setFormData] = useState<FilterFormData>({
         category: '',
         priceMin: '',
@@ -51,7 +43,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                 break;
         }
 
-        onFiltersChange(filterUpdate);
+        updateFilters(filterUpdate);
     };
 
     const handleClearFilters = () => {
@@ -61,7 +53,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
             priceMax: '',
             stockMin: '',
         });
-        onClearFilters();
+        clearFilters();
     };
 
     return (
