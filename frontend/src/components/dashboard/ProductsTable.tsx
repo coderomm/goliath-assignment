@@ -36,7 +36,7 @@ export const ProductsTable = () => {
 
     if (error) {
         return (
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg p-8">
+            <div className="bg-white shadow overflow-hidden sm:rounded-lg p-8 mt-4">
                 <div className="text-center">
                     <div className="text-red-600 mb-2">⚠️</div>
                     <p className="text-red-600">Error: {error.message}</p>
@@ -47,7 +47,7 @@ export const ProductsTable = () => {
 
     if (products.length === 0) {
         return (
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg p-8">
+            <div className="bg-white shadow overflow-hidden sm:rounded-lg p-8 mt-4">
                 <div className="text-center">
                     <p className="text-gray-500">No products found matching your criteria.</p>
                 </div>
@@ -56,11 +56,16 @@ export const ProductsTable = () => {
     }
 
     return (
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div className="bg-white shadow overflow-hidden sm:rounded-lg mt-4">
             <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
+                            <th
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors"
+                            >
+                                Image
+                            </th>
                             <th
                                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors"
                                 onClick={() => updateSort('name')}
@@ -98,7 +103,10 @@ export const ProductsTable = () => {
                                     }`}
                             >
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm font-medium text-gray-900">
+                                    <img src={product.image} className="w-full max-w-10 h-auto" />
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <div className="text-sm font-medium text-gray-900 max-w-70 truncate" title={product.name}>
                                         {product.name}
                                     </div>
                                 </td>

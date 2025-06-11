@@ -15,6 +15,7 @@ query Products($filter:ProductFilter, $sort:ProductSort, $limit:Int, $offset:Int
       id
       name
       category
+      image
       price
       stock
       createdAt

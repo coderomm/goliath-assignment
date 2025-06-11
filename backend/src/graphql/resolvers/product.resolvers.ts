@@ -1,22 +1,22 @@
-import { mockProducts, mockUsers } from "../../utils/mockData";
+import { mockUsers } from "../../utils/mockData";
 import bcrypt from 'bcrypt'
 import { createToken } from "../../utils/token";
 import { AppContext } from "../context";
 import { QueryProductsArgs, Resolvers } from "../generated/graphql";
+import { fetchProducts } from "../../utils/fetchProducts";
 
 // Resolvers define how to fetch the types defined in your schema.
 export const productResolvers: Resolvers = {
 
     Query: {
         me: async (_, __, context: AppContext) => {
-
             const user = context.user ? mockUsers.find(u => u.id === context.user?.id) : null;
             if (!user) throw new Error('Not authenticated');
             return { id: user.id, email: user.email };
         },
 
         products: async (_, args: QueryProductsArgs) => {
-            let filteredProducts = [...mockProducts]
+            let filteredProducts = await fetchProducts();
             if (args.filter) {
                 const { category, priceMin, priceMax, stockMin } = args.filter
                 if (category) {

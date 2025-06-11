@@ -40,6 +40,7 @@ export type Product = {
   category: Scalars['String']['output'];
   createdAt: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  image?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   price: Scalars['Float']['output'];
   stock: Scalars['Int']['output'];
@@ -199,6 +200,7 @@ export type ProductResolvers<ContextType = AppContext, ParentType extends Resolv
   category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   stock?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
