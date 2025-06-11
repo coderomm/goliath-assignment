@@ -4,23 +4,28 @@ import { PRODUCTS_QUERY } from '../graphql/queries';
 import type { Product, ProductFilter, ProductSort } from '../utils/types';
 
 export const useProducts = () => {
-    const [filters, setFilters] = useState<ProductFilter>({});
-    const [sort, setSort] = useState<ProductSort>({
-        field: 'name',
-        order: 'ASC',
-    });
+    const [productState, setProductState] = useState<{
+        filters: ProductFilter,
+        sort: ProductSort
+    }>({
+        filters: {},
+        sort: {
+            field: 'name',
+            order: 'ASC',
+        }
+    })
 
     const { data, loading, error, refetch } = useQuery(PRODUCTS_QUERY, {
         variables: {
             filter: {
-                category: filters.category || undefined,
-                priceMin: filters.priceMin || undefined,
-                priceMax: filters.priceMax || undefined,
-                stockMin: filters.stockMin || undefined,
+                category: productState.filters.category || undefined,
+                priceMin: productState.filters.priceMin || undefined,
+                priceMax: productState.filters.priceMax || undefined,
+                stockMin: productState.filters.stockMin || undefined,
             },
             sort: {
-                field: sort.field,
-                order: sort.order,
+                field: productState.sort.field,
+                order: productState.sort.order,
             },
         },
     });
@@ -28,26 +33,38 @@ export const useProducts = () => {
     const products: Product[] = data?.products || [];
 
     const updateFilters = (newFilters: Partial<ProductFilter>) => {
-        setFilters(prev => ({ ...prev, ...newFilters }));
+        setProductState(prev => ({
+            ...prev,
+            filters: {
+                ...prev.filters,
+                ...newFilters
+            }
+        }))
     };
 
     const clearFilters = () => {
-        setFilters({});
+        setProductState(prev => ({
+            ...prev,
+            filters: {}
+        }));
     };
 
     const updateSort = (field: string) => {
-        setSort(prev => ({
-            field,
-            order: prev.field === field && prev.order === 'ASC' ? 'DESC' : 'ASC',
-        }));
+        setProductState(prev => ({
+            ...prev,
+            sort: {
+                field,
+                order: prev.sort.field === field && prev.sort.order === 'ASC' ? 'DESC' : 'ASC'
+            }
+        }))
     };
 
     return {
         products,
         loading,
         error,
-        filters,
-        sort,
+        filters: productState.filters,
+        sort: productState.sort,
         updateFilters,
         clearFilters,
         updateSort,
